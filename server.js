@@ -156,16 +156,16 @@ request(options, function (error, response) {
 app.get('/eppayslippdf',function(req,res)
 {
   var result5;
-  var request = require('request');
+var request = require('request');
 var options = {
   'method': 'POST',
-  'url': 'https://KTINDHNA02.kaartech.com:8001/sap/bc/srt/rfc/sap/zws_cp_md_credeb/100/zws_cp_md_credeb/zws_cp_md_credeb',
+  'url': 'http://dxktpipo.kaarcloud.com:50000/XISOAPAdapter/MessageServlet?senderParty=&senderService=BC_MURALI_EMPLOYEEPORTAL&receiverParty=&receiverService=&interface=SI_EMPPAYSLIP_PDF_MD&interfaceNamespace=http://EMPLOYEE-PORTAL-MD.com&SOAPAction="http://sap.com/xi/WebService/soap1.1"&Content-Type=text/xml;charset=UTF-8',
   'headers': {
-    'Content-Type': 'Content-Type: application/soap+xml;charset=UTF-8;action="urn:sap-com:document:sap:rfc:functions:ZWS_CP_MD_CREDEB:ZFM_CREDIT_DEBIT_MEMO_CP_MDRequest"',
-    'Authorization': 'Basic YWJhcGVyMTphYmFwQDEyMw==',
-    'Cookie': 'sap-usercontext=sap-client=100'
+    'Content-Type': 'text/xml;charset=UTF-8',
+    'Authorization': 'Basic cG91c2VyQDI6VGVjaEAyMDIy',
+    'Cookie': 'MYSAPSSO2=AjExMDAgAA9wb3J0YWw6cG91c2VyQDKIAAdkZWZhdWx0AQAIUE9VU0VSQDICAAMwMDADAANLUE8EAAwyMDIzMDEwMjA5NTMFAAQAAAAICgAIUE9VU0VSQDL%2FAQUwggEBBgkqhkiG9w0BBwKggfMwgfACAQExCzAJBgUrDgMCGgUAMAsGCSqGSIb3DQEHATGB0DCBzQIBATAiMB0xDDAKBgNVBAMTA0tQTzENMAsGA1UECxMESjJFRQIBADAJBgUrDgMCGgUAoF0wGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMwMTAyMDk1MzQ4WjAjBgkqhkiG9w0BCQQxFgQUMTSRSEqnoD5hjBn8qEmAX5%2FRM9owCQYHKoZIzjgEAwQvMC0CFQCgdnKWLylmctkqdnaSkljbd89UBwIUSa3vb9VzD12JXFUBCZQhYkNAS%2FA%3D; JSESSIONID=JlfIj_CgrfEn4WdAVZMu5REpy-ZxhQF-Y2kA_SAP5b_zMUavZZqcwUFRR4Zgqn3k; saplb_*=(J2EE6906720)6906750'
   },
-  body: `<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:urn="urn:sap-com:document:sap:rfc:functions">\r\n   <soap:Header/>\r\n   <soap:Body>\r\n      <urn:ZFM_CREDIT_DEBIT_MEMO_CP_MD>\r\n         <!--Optional:-->\r\n         <IT_CRE>\r\n            <!--Zero or more repetitions:-->\r\n         \r\n         </IT_CRE>\r\n         <!--Optional:-->\r\n         <IT_DEB>\r\n            <!--Zero or more repetitions:-->\r\n           </IT_DEB>\r\n         <I_CUS_ID>${customerid}</I_CUS_ID>\r\n      </urn:ZFM_CREDIT_DEBIT_MEMO_CP_MD>\r\n   </soap:Body>\r\n</soap:Envelope>`
+  body: `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:sap-com:document:sap:rfc:functions">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <urn:ZFM_EP_EMPPAYSLIP_MD_PDF>\r\n         <!--You may enter the following 3 items in any order-->\r\n         <I_EMP_ID>${empid}</I_EMP_ID>\r\n         <!--Optional:-->\r\n         <I_PAYSLIP_VARIANT></I_PAYSLIP_VARIANT>\r\n         <I_SEQNO>0001</I_SEQNO>\r\n      </urn:ZFM_EP_EMPPAYSLIP_MD_PDF>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>`
 
 };
 request(options, function (error, response) {
