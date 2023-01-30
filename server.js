@@ -6,10 +6,14 @@ var cors = require("cors")
 const {response} = require('express')
 const app = express();
 const X2JS = require('x2js')
+const { exit } = require("process");
+const accountSid = 'ACdbc551338855ad25fedecadf7207e3b2'; 
+const authToken = '4a8a86283a98ca659dc179353042860a'; 
+const client = require('twilio')(accountSid, authToken); 
 
 app.use(cors())
 
-process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
+
 
 
 app.use(bodyParser.json())
@@ -34,7 +38,7 @@ app.post('/eplogin',function(req,res)
     }
     
 
-    var request = require('request');
+var request = require('request');
 var options = {
   'method': 'POST',
   'url': 'http://dxktpipo.kaarcloud.com:50000/XISOAPAdapter/MessageServlet?senderParty=&senderService=BC_MURALI_EMPLOYEEPORTAL&receiverParty=&receiverService=&interface=SI_EMP_LOGIN_MD&interfaceNamespace=http://EMPLOYEE-PORTAL-MD.com',
@@ -52,6 +56,34 @@ request(options, function (error, response) {
   var x2js = new X2JS();
   result1 = x2js.xml2js(response.body)
   result1 = JSON.stringify(result1)
+  console.log(result1)
+  var status = response.body;
+  status = x2js.xml2js(status)
+  console.log(status)
+  status=status['Envelope']['Body']['ZFM_LOGIN_EP_MD.Response']['RETCODE']
+  console.log(status)
+  if(status == "S")
+  {
+    client.messages 
+      .create({ 
+         body: 'Login Attempt Made!Login Successful!',  
+         messagingServiceSid: 'MG3b1bb34d27f2176205c43dbd554b58e0',      
+         to: '+919150064160' 
+       }) 
+      .then(message => console.log(message.sid)) 
+      .done();
+  }
+  else{
+    client.messages 
+      .create({ 
+         body: 'Login Attempt Made!Login Failure!Check Credentials',  
+         messagingServiceSid: 'MG3b1bb34d27f2176205c43dbd554b58e0',      
+         to: '+919150064160' 
+       }) 
+      .then(message => console.log(message.sid)) 
+      .done();
+
+  }
   res.send(result1)
 });
 
@@ -180,6 +212,14 @@ request(options, function (error, response) {
 })
 
 
+app.get('/shutdown',function(req,res)
+{
+
+ 
+  exit();
+
+
+})
 
 
 app.listen(3030,()=>
