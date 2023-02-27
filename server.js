@@ -25,6 +25,42 @@ app.use(bodyParser.json())
 var empid;
 var password;
 var auth;
+var otp;
+
+
+app.post('/otp',function(req,res)
+{
+  otp=req.body.otp;
+  console.log(otp);
+  const message=`Hello your Login otp is ${otp}!`
+   client.messages 
+      .create({ 
+         body: message,  
+         messagingServiceSid: 'MG3b1bb34d27f2176205c43dbd554b58e0',      
+         to: '+919150064160' 
+       }) 
+      .then(message => console.log(message.sid)) 
+      .done();
+
+      const msg = {
+        to: 'muraliramboo12@gmail.com', 
+        from: 'muralidharanportals@proton.me', 
+        subject: 'LOGIN ATTEMPT-Reg',
+        html: `Hello your Login otp is ${otp}!`,
+      }
+      sgMail
+        .send(msg)
+        .then(() => {
+          console.log('Email sent')
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+      
+
+   res.send("OTP SENT SUCCESSFULLY")
+
+})
 
 
 
