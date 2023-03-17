@@ -14,6 +14,7 @@ const client = require('twilio')(accountSid, authToken);
 const folderPath = "D:/payslip";
 const sgMail = require('@sendgrid/mail')
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+const session = require('express-session');
 
 app.use(cors())
 
@@ -26,6 +27,12 @@ var empid;
 var password;
 var auth;
 var otp;
+
+app.use(session({
+  secret: 'mysecret', // use a secret key to sign the session ID cookie
+  resave: false,
+  saveUninitialized: true,
+}));
 
 
 app.post('/otp',function(req,res)
@@ -85,7 +92,7 @@ var options = {
   'headers': {
     'SOAPAction': '"http://sap.com/xi/WebService/soap1.1"',
     'Content-Type': 'text/xml;charset=UTF-8',
-    'Authorization': 'Basic cG91c2VyQDI6VGVjaEAyMDIy',
+    'Authorization': 'Basic cG91c2VyQDE6MjAyMkBUZWNo',
     'Cookie': 'MYSAPSSO2=AjExMDAgAA9wb3J0YWw6cG91c2VyQDKIAAdkZWZhdWx0AQAIUE9VU0VSQDICAAMwMDADAANLUE8EAAwyMDIyMTIyODA0MzMFAAQAAAAICgAIUE9VU0VSQDL%2FAQYwggECBgkqhkiG9w0BBwKggfQwgfECAQExCzAJBgUrDgMCGgUAMAsGCSqGSIb3DQEHATGB0TCBzgIBATAiMB0xDDAKBgNVBAMTA0tQTzENMAsGA1UECxMESjJFRQIBADAJBgUrDgMCGgUAoF0wGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjIxMjI4MDQzMzEzWjAjBgkqhkiG9w0BCQQxFgQUKi%2FQsf7wMRRak79FJ6cK6bxty18wCQYHKoZIzjgEAwQwMC4CFQDPCrsyr%2Fgi5B2sOdSsBlg!zczQOgIVAIsA2jv!QNM9wBof9%2FnV2SZXatdS; JSESSIONID=M_qTK1mI1AjZr2jQBFhA5ZZAfQFXhQF-Y2kA_SAPzRdLtBxmIf6WgZfBnnGd3kHd; saplb_*=(J2EE6906720)6906750'
   },
   body: `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:sap-com:document:sap:rfc:functions">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <urn:ZFM_LOGIN_EP_MD>\r\n         <!--You may enter the following 2 items in any order-->\r\n         <I_EMP_ID>${empid}</I_EMP_ID>\r\n         <I_PASSWORD>${password}</I_PASSWORD>\r\n      </urn:ZFM_LOGIN_EP_MD>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>`
@@ -186,7 +193,7 @@ var options = {
   'headers': {
     'SOAPAction': '"http://sap.com/xi/WebService/soap1.1"',
     'Content-Type': 'text/xml;charset=UTF-8',
-    'Authorization': 'Basic cG91c2VyQDI6VGVjaEAyMDIy',
+    'Authorization': 'Basic cG91c2VyQDE6MjAyMkBUZWNo',
     'Cookie': 'MYSAPSSO2=AjExMDAgAA9wb3J0YWw6cG91c2VyQDKIAAdkZWZhdWx0AQAIUE9VU0VSQDICAAMwMDADAANLUE8EAAwyMDIyMTIyODA0MzMFAAQAAAAICgAIUE9VU0VSQDL%2FAQYwggECBgkqhkiG9w0BBwKggfQwgfECAQExCzAJBgUrDgMCGgUAMAsGCSqGSIb3DQEHATGB0TCBzgIBATAiMB0xDDAKBgNVBAMTA0tQTzENMAsGA1UECxMESjJFRQIBADAJBgUrDgMCGgUAoF0wGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjIxMjI4MDQzMzEzWjAjBgkqhkiG9w0BCQQxFgQUKi%2FQsf7wMRRak79FJ6cK6bxty18wCQYHKoZIzjgEAwQwMC4CFQDPCrsyr%2Fgi5B2sOdSsBlg!zczQOgIVAIsA2jv!QNM9wBof9%2FnV2SZXatdS; JSESSIONID=M_qTK1mI1AjZr2jQBFhA5ZZAfQFXhQF-Y2kA_SAPzRdLtBxmIf6WgZfBnnGd3kHd; JSESSIONMARKID=iDzWyw6meYq06gm96b1t3y7glGYGZmiXauln5jaQA; saplb_*=(J2EE6906720)6906750'
   },
   body: `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:sap-com:document:sap:rfc:functions">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <urn:ZFM_PROFILE_EP_MD>\r\n         <!--You may enter the following 3 items in any order-->\r\n         <I_EMP_ID>${empid}</I_EMP_ID>\r\n         <COMP_ADDRESS>\r\n            <!--Zero or more repetitions:-->\r\n           \r\n         </COMP_ADDRESS>\r\n         <COMP_STRUCT>\r\n            <!--Zero or more repetitions:-->\r\n            \r\n               <!--Optional:-->\r\n               \r\n         </COMP_STRUCT>\r\n      </urn:ZFM_PROFILE_EP_MD>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>`
@@ -214,7 +221,7 @@ var options = {
   'headers': {
     'SOAPAction': '"http://sap.com/xi/WebService/soap1.1"',
     'Content-Type': 'text/xml;charset=UTF-8',
-    'Authorization': 'Basic cG91c2VyQDI6VGVjaEAyMDIy',
+    'Authorization': 'Basic cG91c2VyQDE6MjAyMkBUZWNo',
     'Cookie': 'MYSAPSSO2=AjExMDAgAA9wb3J0YWw6cG91c2VyQDKIAAdkZWZhdWx0AQAIUE9VU0VSQDICAAMwMDADAANLUE8EAAwyMDIyMTIyODA0MzMFAAQAAAAICgAIUE9VU0VSQDL%2FAQYwggECBgkqhkiG9w0BBwKggfQwgfECAQExCzAJBgUrDgMCGgUAMAsGCSqGSIb3DQEHATGB0TCBzgIBATAiMB0xDDAKBgNVBAMTA0tQTzENMAsGA1UECxMESjJFRQIBADAJBgUrDgMCGgUAoF0wGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjIxMjI4MDQzMzEzWjAjBgkqhkiG9w0BCQQxFgQUKi%2FQsf7wMRRak79FJ6cK6bxty18wCQYHKoZIzjgEAwQwMC4CFQDPCrsyr%2Fgi5B2sOdSsBlg!zczQOgIVAIsA2jv!QNM9wBof9%2FnV2SZXatdS; JSESSIONID=M_qTK1mI1AjZr2jQBFhA5ZZAfQFXhQF-Y2kA_SAPzRdLtBxmIf6WgZfBnnGd3kHd; JSESSIONMARKID=w97oLgr7zWpVe3Rwv-N13698z-K3jW-5BxmH5jaQA; saplb_*=(J2EE6906720)6906750'
   },
   body: `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:sap-com:document:sap:rfc:functions">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <urn:ZFM_EP_EMPLEAVE_MD>\r\n         <!--You may enter the following 2 items in any order-->\r\n         <I_EMP_ID>${empid}</I_EMP_ID>\r\n         <IT_EMPLEAVE>\r\n            <!--Zero or more repetitions:-->\r\n           \r\n         </IT_EMPLEAVE>\r\n      </urn:ZFM_EP_EMPLEAVE_MD>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>`
@@ -242,7 +249,7 @@ var options = {
   'headers': {
     'SOAPAction': '"http://sap.com/xi/WebService/soap1.1"',
     'Content-Type': 'text/xml;charset=UTF-8',
-    'Authorization': 'Basic cG91c2VyQDI6VGVjaEAyMDIy',
+    'Authorization': 'Basic cG91c2VyQDE6MjAyMkBUZWNo',
     'Cookie': 'MYSAPSSO2=AjExMDAgAA9wb3J0YWw6cG91c2VyQDKIAAdkZWZhdWx0AQAIUE9VU0VSQDICAAMwMDADAANLUE8EAAwyMDIyMTIyODA0MzMFAAQAAAAICgAIUE9VU0VSQDL%2FAQYwggECBgkqhkiG9w0BBwKggfQwgfECAQExCzAJBgUrDgMCGgUAMAsGCSqGSIb3DQEHATGB0TCBzgIBATAiMB0xDDAKBgNVBAMTA0tQTzENMAsGA1UECxMESjJFRQIBADAJBgUrDgMCGgUAoF0wGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjIxMjI4MDQzMzEzWjAjBgkqhkiG9w0BCQQxFgQUKi%2FQsf7wMRRak79FJ6cK6bxty18wCQYHKoZIzjgEAwQwMC4CFQDPCrsyr%2Fgi5B2sOdSsBlg!zczQOgIVAIsA2jv!QNM9wBof9%2FnV2SZXatdS; JSESSIONID=M_qTK1mI1AjZr2jQBFhA5ZZAfQFXhQF-Y2kA_SAPzRdLtBxmIf6WgZfBnnGd3kHd; JSESSIONMARKID=w97oLgr7zWpVe3Rwv-N13698z-K3jW-5BxmH5jaQA; saplb_*=(J2EE6906720)6906750'
   },
   body: `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:sap-com:document:sap:rfc:functions">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <urn:ZFM_EP_EMPPAYSLIP_MD>\r\n         <!--You may enter the following 2 items in any order-->\r\n         <I_EMP_ID>${empid}</I_EMP_ID>\r\n         <!--Optional:-->\r\n         <IT_PAY>\r\n            <!--Zero or more repetitions:-->\r\n           \r\n         </IT_PAY>\r\n      </urn:ZFM_EP_EMPPAYSLIP_MD>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>`
@@ -268,7 +275,7 @@ var options = {
   'url': 'http://dxktpipo.kaarcloud.com:50000/XISOAPAdapter/MessageServlet?senderParty=&senderService=BC_MURALI_EMPLOYEEPORTAL&receiverParty=&receiverService=&interface=SI_EMPPAYSLIP_PDF_MD&interfaceNamespace=http://EMPLOYEE-PORTAL-MD.com&SOAPAction="http://sap.com/xi/WebService/soap1.1"&Content-Type=text/xml;charset=UTF-8',
   'headers': {
     'Content-Type': 'text/xml;charset=UTF-8',
-    'Authorization': 'Basic cG91c2VyQDI6VGVjaEAyMDIy',
+    'Authorization': 'Basic cG91c2VyQDE6MjAyMkBUZWNo',
     'Cookie': 'MYSAPSSO2=AjExMDAgAA9wb3J0YWw6cG91c2VyQDKIAAdkZWZhdWx0AQAIUE9VU0VSQDICAAMwMDADAANLUE8EAAwyMDIzMDEwMjA5NTMFAAQAAAAICgAIUE9VU0VSQDL%2FAQUwggEBBgkqhkiG9w0BBwKggfMwgfACAQExCzAJBgUrDgMCGgUAMAsGCSqGSIb3DQEHATGB0DCBzQIBATAiMB0xDDAKBgNVBAMTA0tQTzENMAsGA1UECxMESjJFRQIBADAJBgUrDgMCGgUAoF0wGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMwMTAyMDk1MzQ4WjAjBgkqhkiG9w0BCQQxFgQUMTSRSEqnoD5hjBn8qEmAX5%2FRM9owCQYHKoZIzjgEAwQvMC0CFQCgdnKWLylmctkqdnaSkljbd89UBwIUSa3vb9VzD12JXFUBCZQhYkNAS%2FA%3D; JSESSIONID=JlfIj_CgrfEn4WdAVZMu5REpy-ZxhQF-Y2kA_SAP5b_zMUavZZqcwUFRR4Zgqn3k; saplb_*=(J2EE6906720)6906750'
   },
   body: `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:sap-com:document:sap:rfc:functions">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <urn:ZFM_EP_EMPPAYSLIP_MD_PDF>\r\n         <!--You may enter the following 3 items in any order-->\r\n         <I_EMP_ID>${empid}</I_EMP_ID>\r\n         <!--Optional:-->\r\n         <I_PAYSLIP_VARIANT></I_PAYSLIP_VARIANT>\r\n         <I_SEQNO>0001</I_SEQNO>\r\n      </urn:ZFM_EP_EMPPAYSLIP_MD_PDF>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>`
@@ -290,7 +297,14 @@ app.get('/shutdown',function(req,res)
 {
 
  
-  exit();
+   req.session.destroy((err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log('Session destroyed');
+      res.send('Session destroyed');
+    }
+  });
 
 
 })
